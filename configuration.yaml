@@ -1,0 +1,74 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+frontend:
+  themes: !include_dir_merge_named themes
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+# Load packages
+packages: !include_dir_named integrations
+# Text to speech
+tts:
+  - platform: google_translate
+  
+sensor:
+  platform: trakt
+  id: '830ab74a050629ecd6d666508d5094bc3745a5dae665aa433189a5a433d8d24e'
+  secret: '4def8421d33a40299b585bb911659d3de083e02e8272642257b8e34f34439bbc'
+  username: turnpoint
+  
+homekit:
+  auto_start: true
+
+automation:
+  - alias: 'Start HomeKit'
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: homekit.start
+      
+  
+badnest:
+  user_id: 4863350
+  access_token: b.4863350.gJ3XOEyOMbk2Wv6HqTGmGTjNEu1yJ4EA8eigDL7RovQUigrUqt9AkAv85uCHG2F79vU6Yz8jZruHeD0spZLhP7lMQfxa4G0JJjhWdizOzrjM41HRRi3KcVM0KY7o4HOX64aBpaAFTJQ8cobE_1583181103869
+  region: us
+
+climate:
+  - platform: badnest
+    scan_interval: 10
+
+camera:
+  - platform: badnest
+
+sensor:
+  - platform: badnest
+  
+sensor:
+  - platform: buienalarm
+    timeframe: 15
+    name: buienalarm
+    monitored_conditions:
+      - temperature
+      - precipitation
+      - precipitation_forecast_average
+      - precipitation_forecast_total
+      
+ziggonext:
+  username: vinnie711
+  password: Ladder-37
+  
+sensor:
+  platform: youtube
+  channel_id: UCZ2Ku6wrhdYDHCaBzLaA3bw
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+owntracks:
+    max_gps_accuracy: 200
+    waypoints: true
+    
+discovery:
